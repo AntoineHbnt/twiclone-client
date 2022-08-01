@@ -11,10 +11,6 @@ const Tweet = ({ content }) => {
   const uid = useContext(UidContext);
   const {type, tweet, posterId} = content;
 
-  useEffect(() => {
-    console.log(content);
-  }, [content]);
-
   return (
     <div className="tweet-container">
       <div className="tweet-wrapper">

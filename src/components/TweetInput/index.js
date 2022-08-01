@@ -39,7 +39,7 @@ const TweetInput = ({type}) => {
     dispatch(updateMessage("%toErase%"));
   };
 
-  const handleTweetData = () => {
+  const handleTweetData = async () => {
     const data = new FormData();
     
     !isEmpty(media) && media.map((item) => {
@@ -54,7 +54,7 @@ const TweetInput = ({type}) => {
 
   const handlePost = async () => {
     setSending(true);
-    const data = handleTweetData();
+    const data = await handleTweetData();
     dispatch(addTweet({uid: userData._id, data}));
     cancelTweet();
     setSending(false);
