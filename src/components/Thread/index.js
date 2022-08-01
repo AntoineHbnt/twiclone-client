@@ -5,7 +5,6 @@ import Tweet from "../Tweet";
 import { isEmpty } from "../Utils";
 
 const Thread = ({ type, uid, filter = "" }) => {
-  const [loadTweet, setLoadTweet] = useState(true);
   const dispatch = useDispatch();
   const thread = useSelector((state) => state.threadReducer);
   const tweetdata = useSelector((state) => state.threadReducer.timeline);
@@ -40,11 +39,14 @@ const Thread = ({ type, uid, filter = "" }) => {
   }, [tweetdata, filter]);
 
   useEffect(() => {
-    loadTweet && dispatch(getThread(uid, type));
-    !isEmpty(tweetdata[0]) && setLoadTweet(false);
-  }, [thread]);
+    console.log("thread", thread);
+  }, [thread])
 
-  return loadTweet ? (
+  useEffect(() => {
+    dispatch(getThread({uid, type}));
+  }, []);
+
+  return isEmpty(tweetList) ? (
     <div className="loading">
       <img src="./img/icons/load.svg" />
     </div>

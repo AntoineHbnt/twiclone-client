@@ -6,7 +6,7 @@ export const UNFAV_TWEET = "UNFAV_TWEET";
 export const RETWEET_TWEET = "RETWEET_TWEET";
 export const UNRETWEET_TWEET = "UNRETWEET_TWEET";
 
-export const getThread = (uid, type) => {
+export const getThread = ({uid, type}) => {
   return (dispatch) => {
     return axios({
       method: "get",

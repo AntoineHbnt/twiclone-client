@@ -104,10 +104,14 @@ module.exports.getThread = async (req, res) => {
       await Promise.all(
         tweetList.map(async ({ id, type, timestamp }) => {
           tweet = await TweetModel.findById(id).populate("posterUser");
-          if (tweet) timeline.push({ tweet, type, timestamp });
-          if (tweet.favs.includes(user._id) && !userFavs.includes(tweet._id))
-            userFavs.push(tweet._id);
-          if (tweet.retweets.includes(user._id)) userRetweets.push(tweet._id);
+
+          if(tweet) {
+            timeline.push({tweet, type, timestamp });
+            if (tweet.favs.includes(user._id) && !userFavs.includes(tweet._id))
+              userFavs.push(tweet._id);
+            if (tweet.retweets.includes(user._id)) userRetweets.push(tweet._id);
+          }
+          
         })
       );
     };

@@ -23,10 +23,7 @@ const TweetInput = ({type}) => {
   const error = useSelector((state) => state.errorsReducer.tweetError)
 
   //reduxData
-  const audience = tweetInputData.audience;
-  const showAudienceModal = tweetInputData.showAudienceModal;
-  const message = tweetInputData.message;
-  const media = tweetInputData.media;
+  const {audience, showAudienceModal, message, media} = tweetInputData;
 
   const [available, setAvailable] = useState(false);
   const [showAudience, setShowAudience] = useState(false);
@@ -58,8 +55,7 @@ const TweetInput = ({type}) => {
   const handlePost = async () => {
     setSending(true);
     const data = handleTweetData();
-    dispatch(addTweet(userData._id, data));
-    dispatch(getThread(userData._id, "timeline"));
+    dispatch(addTweet({uid: userData._id, data}));
     cancelTweet();
     setSending(false);
   };

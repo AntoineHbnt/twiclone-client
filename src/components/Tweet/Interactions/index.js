@@ -36,20 +36,15 @@ const Interaction = ({ tweet }) => {
     setNbComment(numberParser(tweet.comments.length));
     setNbRetweet(numberParser(tweet.retweets.length));
 
-    if(threadData.userRetweets.includes(tweetId)){
-      setIsRetweetActive(true)
-    }else setIsRetweetActive(false)
+    setIsRetweetActive(threadData.userRetweets.includes(tweetId) ? true : false)
+    setIsFavActive(threadData.userFavs.includes(tweetId) ? true : false)
+
   }, [tweet])
 
+
+
   const handleFav = () => {
-    if (isFavActive) {
-      dispatch(unfavTweet({tweetId, uid: userData._id}));
-      setIsFavActive(false);
-    }
-    if (!isFavActive) {
-      dispatch(favTweet({tweetId, uid: userData._id}));
-      setIsFavActive(true);
-    }
+    dispatch(isFavActive ? unfavTweet({tweetId, uid: userData._id}) : favTweet({tweetId, uid: userData._id}));
   }
 
   const handleRetweet = () => {
