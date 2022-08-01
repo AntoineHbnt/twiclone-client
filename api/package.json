@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "vercel dev",
-    "deploy": "vercel deploy --prod"
+    "start": "nodemon server"
   },
   "keywords": [],
   "author": "",

@@ -4,9 +4,14 @@ import FavButton from "./FavButton";
 import RetweetButton from "./RetweetButton";
 import ShareButton from "./ShareButton";
 import { abbreviateNumber } from "js-abbreviation-number";
+import { useDispatch, useSelector } from "react-redux";
+import { favTweet, unfavTweet } from "../../../actions/thread.actions";
 
 const Interaction = ({ tweet }) => {
   const tweetId = tweet._id;
+  const dispatch = useDispatch();
+  const userData = useSelector((state) => state.userReducer);
+  const threadData = useSelector((state) => state.threadReducer);
 
   const numberParser = (num) => {
     if (num <= 9999) {
@@ -16,8 +21,12 @@ const Interaction = ({ tweet }) => {
     } else return abbreviateNumber(num.toString(),0)
   };
   
+  const [isFavActive, setIsFavActive] = useState( threadData.userFavs.includes(tweetId));
   const [nbFav, setNbFav] = useState(numberParser(tweet.favs.length));
+
   const [nbRetweet, setNbRetweet] = useState(numberParser(tweet.retweets.length));
+
+
   const [nbComment, setNbComment] = useState(numberParser(tweet.comments.length));
 
 
@@ -27,12 +36,23 @@ const Interaction = ({ tweet }) => {
     setNbRetweet(numberParser(tweet.retweets.length));
   }, [tweet])
 
+  const handleFav = () => {
+    if (isFavActive) {
+      dispatch(unfavTweet({tweetId, uid: userData._id}));
+      setIsFavActive(false);
+    }
+    if (!isFavActive) {
+      dispatch(favTweet({tweetId, uid: userData._id}));
+      setIsFavActive(true);
+    }
+  }
+
   return (
     <div className="interaction-container">
       <div className="interaction-wrapper">
         <CommentButton tweet={tweet} tweetId={tweetId} value={nbComment} />
         <RetweetButton tweet={tweet} tweetId={tweetId} value={nbRetweet} />
-        <FavButton tweetId={tweetId} value={nbFav} />
+        <FavButton isActive={isFavActive} onClick={() => handleFav()} value={nbFav} />
         <ShareButton tweet={tweet} />
       </div>
     </div>
