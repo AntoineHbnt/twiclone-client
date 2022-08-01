@@ -18,7 +18,7 @@ export const getThread = (uid, type) => {
   };
 };
 
-export const favTweet = (uid, tweetId) => {
+export const favTweet = ({uid, tweetId}) => {
   return (dispatch) => {
     return axios({
       method: "patch",
@@ -32,7 +32,7 @@ export const favTweet = (uid, tweetId) => {
   }
 }
 
-export const unfavTweet = (uid, tweetId) => {
+export const unfavTweet = ({uid, tweetId}) => {
   return (dispatch) => {
     return axios({
       method: "patch",

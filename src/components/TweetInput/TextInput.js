@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Editor, EditorState, CompositeDecorator, ContentState } from "draft-js";
+import {
+  Editor,
+  EditorState,
+  CompositeDecorator,
+  ContentState,
+} from "draft-js";
 import { useDispatch, useSelector } from "react-redux";
 import { updateMessage } from "../../actions/tweetInput.action";
 
@@ -26,7 +31,7 @@ const createDecorator = () =>
 
 export default function TextInput() {
   const dispatch = useDispatch();
-  const text = useSelector((state) => state.tweetInputReducer.message);
+  const [text, setText] = useState("");
 
   const [editorState, setEditorState] = useState(
     EditorState.createEmpty(createDecorator())
@@ -39,18 +44,22 @@ export default function TextInput() {
   }
 
   useEffect(() => {
-    if (text !== "%toErase%") {
+    dispatch(updateMessage(text));
+  }, [text]);
+
+  useEffect(() => {
+    const currentValue = editorState.getCurrentContent().getPlainText("\u0001")
+
+    if (currentValue !== "%toErase%") {
       focusEditor();
-      dispatch(
-        updateMessage(editorState.getCurrentContent().getPlainText("\u0001"))
-      );
-    }else{
-      setEditorState(EditorState.push(editorState, ContentState.createFromText('')))
-      dispatch(
-        updateMessage(editorState.getCurrentContent().getPlainText("\u0001"))
+    } else {
+      setEditorState(
+        EditorState.push(editorState, ContentState.createFromText(""))
       );
     }
-  }, [editorState, text]);
+
+    setText(editorState.getCurrentContent().getPlainText("\u0001"));
+  }, [editorState]);
 
   return (
     <Editor

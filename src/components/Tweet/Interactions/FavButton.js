@@ -1,34 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { favTweet, unfavTweet } from "../../../actions/thread.actions";
-import { UidContext } from "../../AppContext";
+import React from "react";
 
-const FavButton = ({ tweetId, value }) => {
-  const dispatch = useDispatch();
-  const userData = useSelector((state) => state.userReducer);
-  const threadData = useSelector((state) => state.threadReducer);
-
-  const [isActive, setIsActive] = useState(
-    threadData.userFavs.includes(tweetId)
-  );
-
-  const handleFav = async () => {
-    isActive
-      ? dispatch(unfavTweet(userData._id, tweetId))
-      : dispatch(favTweet(userData._id, tweetId));
-  };
-
-  useEffect(() => {
-    setIsActive(userData.favs.find((fav) => {return fav.id === tweetId}) !== undefined);
-  }, [userData.favs]);
+const FavButton = ({ value, onClick, isActive }) => {
 
   return (
     <div
       className={"interaction fav" + (isActive ? " active" : "")}
-      onClick={(e) => {
-        e.preventDefault();
-        handleFav();
-      }}
+      onClick={onClick}
     >
       <div className="logo">
         <svg

@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { addTweetError } from "../../actions/error.action";
 import { getThread } from "../../actions/thread.actions";
 import {
-  updateAudience,
   updateMedia,
   updateMessage,
   updateShowAudienceModal,
@@ -59,8 +58,8 @@ const TweetInput = ({type}) => {
   const handlePost = async () => {
     setSending(true);
     const data = handleTweetData();
-    await dispatch(addTweet(userData._id, data));
-    await dispatch(getThread(userData._id, "timeline"));
+    dispatch(addTweet(userData._id, data));
+    dispatch(getThread(userData._id, "timeline"));
     cancelTweet();
     setSending(false);
   };

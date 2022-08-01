@@ -21,9 +21,9 @@ const app = express();
 //Cors policy
 const corsOptions = {
   origin: [
-    "http://localhost:3001/",
+    "http://localhost:3000/",
     "https://twiiclone.vercel.app/",
-    "http://localhost:3001",
+    "http://localhost:3000",
     "https://twiiclone.vercel.app",
   ],
   credentials: true,
