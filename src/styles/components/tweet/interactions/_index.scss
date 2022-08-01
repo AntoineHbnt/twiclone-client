@@ -1,0 +1,39 @@
+@import "./retweetMenu";
+@import "./interactionsOption";
+
+.interaction-container {
+  margin-top: 0.75rem;
+  margin-bottom: 0.25rem;
+  max-width: 27rem;
+  .interaction-wrapper {
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    .interaction {
+      position: relative;
+      display: flex;
+      align-items: center;
+      
+      .logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: 9999px;
+        transition: all 0.1s ease-in;
+
+        .interaction-logo {
+          width: 1.17rem;
+          fill: $color-4;
+        }
+      }
+      .number {
+        font-size: 0.8rem;
+        line-height: 1rem;
+        padding: 0 0.75rem 0 0.1rem;
+        transition: all 0.1s ease-in;
+      }
+    }
+  }
+}
