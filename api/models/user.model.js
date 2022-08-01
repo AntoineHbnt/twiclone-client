@@ -71,6 +71,7 @@ const userSchema = new mongoose.Schema(
       type: [
         {
           id: String,
+          posterId: String,
           type: { type: String },
           timestamp: Number,
         },

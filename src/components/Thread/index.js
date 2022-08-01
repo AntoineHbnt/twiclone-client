@@ -6,7 +6,6 @@ import { isEmpty } from "../Utils";
 
 const Thread = ({ type, uid, filter = "" }) => {
   const dispatch = useDispatch();
-  const thread = useSelector((state) => state.threadReducer);
   const tweetdata = useSelector((state) => state.threadReducer.timeline);
   const [tweetList, setTweetList] = useState(tweetdata);
 
@@ -39,10 +38,6 @@ const Thread = ({ type, uid, filter = "" }) => {
   }, [tweetdata, filter]);
 
   useEffect(() => {
-    console.log("thread", thread);
-  }, [thread])
-
-  useEffect(() => {
     dispatch(getThread({uid, type}));
   }, []);
 
@@ -53,15 +48,11 @@ const Thread = ({ type, uid, filter = "" }) => {
   ) : (
     <div className="tweet-list">
       {!isEmpty(tweetList) &&
-        tweetList.map((e, i) => {
+        tweetList.map((content, i) => {
           return (
             <Tweet
-              key={e.tweet._id + i}
-              tweet={e.tweet}
-              type={e.type}
-              followingUser={
-                e.followingUser !== undefined ? e.followingUser : null
-              }
+              key={content.tweet._id + i}
+              content={content}
             />
           );
         })}

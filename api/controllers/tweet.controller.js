@@ -102,11 +102,11 @@ module.exports.getThread = async (req, res) => {
 
     const getTweets = async (tweetList) => {
       await Promise.all(
-        tweetList.map(async ({ id, type, timestamp }) => {
+        tweetList.map(async ({ id, type, timestamp, posterId }) => {
           tweet = await TweetModel.findById(id).populate("posterUser");
 
           if(tweet) {
-            timeline.push({tweet, type, timestamp });
+            timeline.push({ tweet, type, timestamp, posterId });
             if (tweet.favs.includes(user._id) && !userFavs.includes(tweet._id))
               userFavs.push(tweet._id);
             if (tweet.retweets.includes(user._id)) userRetweets.push(tweet._id);
@@ -248,11 +248,11 @@ module.exports.retweet = async (req, res) => {
       return res.status(200).send(docs);
     });
 
-    const user = await UserModel.findByIdAndUpdate(
+    await UserModel.findByIdAndUpdate(
       uid,
       {
         $addToSet: {
-          retweets: { id: tweetId, type: "retweet", timestamp: Date.now() },
+          retweets: { id: tweetId, posterId: uid, type: "retweet", timestamp: Date.now() },
         },
       },
       { new: true }

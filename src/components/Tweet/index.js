@@ -1,11 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import { dateTweetParser } from "../Utils";
 import Interaction from "./Interactions";
 import MediaContent from "./MediaContent";
 import Quote from "./Quote";
 import { Link } from "react-router-dom";
+import { UidContext } from "../AppContext";
+import { useEffect } from "react";
 
-const Tweet = ({ tweet, type, followingUser }) => {
+const Tweet = ({ content }) => {
+  const uid = useContext(UidContext);
+  const {type, tweet, posterId} = content;
+
+  useEffect(() => {
+    console.log(content);
+  }, [content]);
+
   return (
     <div className="tweet-container">
       <div className="tweet-wrapper">
@@ -18,9 +27,9 @@ const Tweet = ({ tweet, type, followingUser }) => {
                     <img src="./img/icons/tweet/origin/retweet.svg" alt="" />
                   </div>
                   <div className="label">
-                    {followingUser
-                      ? followingUser.userPseudo + " a retweeté"
-                      : "vous avez retweeté"}
+                    {posterId === uid
+                      ? "vous avez retweeté"
+                      : tweet.posterUser.userPseudo + " a retweeté"}
                   </div>
                 </>
               )}
@@ -29,7 +38,11 @@ const Tweet = ({ tweet, type, followingUser }) => {
                   <div className="logo">
                     <img src="./img/icons/tweet/origin/follow-fav.svg" alt="" />
                   </div>
-                  <div className="label">{followingUser.userPseudo} a aimé</div>
+                  <div className="label">
+                    {tweet.posterUser._id === uid
+                      ? tweet.posterUser.userPseudo + " a aimé"
+                      : "vous avez aimé"}
+                  </div>
                 </>
               )}
             </div>
