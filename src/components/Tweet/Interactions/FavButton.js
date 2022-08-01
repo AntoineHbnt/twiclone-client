@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { favTweet, unfavTweet } from "../../../actions/thread.actions";
+import React from "react";
 
-const FavButton = ({ tweetId, value, onClick, isActive }) => {
+const FavButton = ({ value, onClick, isActive }) => {
 
   return (
     <div
