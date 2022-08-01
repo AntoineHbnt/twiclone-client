@@ -24,6 +24,7 @@ const Interaction = ({ tweet }) => {
   const [isFavActive, setIsFavActive] = useState( threadData.userFavs.includes(tweetId));
   const [nbFav, setNbFav] = useState(numberParser(tweet.favs.length));
 
+  const [isRetweetActive, setIsRetweetActive] = useState(threadData.userRetweets.includes(tweetId));
   const [nbRetweet, setNbRetweet] = useState(numberParser(tweet.retweets.length));
 
 
@@ -34,6 +35,10 @@ const Interaction = ({ tweet }) => {
     setNbFav(numberParser(tweet.favs.length));
     setNbComment(numberParser(tweet.comments.length));
     setNbRetweet(numberParser(tweet.retweets.length));
+
+    if(threadData.userRetweets.includes(tweetId)){
+      setIsRetweetActive(true)
+    }else setIsRetweetActive(false)
   }, [tweet])
 
   const handleFav = () => {
@@ -47,11 +52,20 @@ const Interaction = ({ tweet }) => {
     }
   }
 
+  const handleRetweet = () => {
+    if (isRetweetActive) {
+      setIsRetweetActive(false);
+    }
+    if (!isRetweetActive) {
+      setIsRetweetActive(true);
+    }
+  }
+
   return (
     <div className="interaction-container">
       <div className="interaction-wrapper">
         <CommentButton tweet={tweet} tweetId={tweetId} value={nbComment} />
-        <RetweetButton tweet={tweet} tweetId={tweetId} value={nbRetweet} />
+        <RetweetButton isActive={isRetweetActive} tweet={tweet} tweetId={tweetId} value={nbRetweet} />
         <FavButton isActive={isFavActive} onClick={() => handleFav()} value={nbFav} />
         <ShareButton tweet={tweet} />
       </div>

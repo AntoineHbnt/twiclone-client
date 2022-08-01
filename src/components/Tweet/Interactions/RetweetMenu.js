@@ -2,25 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { retweet, unRetweet } from "../../../actions/thread.actions";
 
-const RetweetMenu = ({ closeMenu, tweetId }) => {
+const RetweetMenu = ({ closeMenu, tweetId, isActive }) => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.userReducer);
   const threadData = useSelector((state) => state.threadReducer);
-  
-  const [isActive, setIsActive] = useState(userData.retweets.find((retweet) => {return retweet.id === tweetId}) !== undefined)
 
   const handleRetweet = () => {
     threadData.userRetweets.includes(tweetId)
       ? dispatch(unRetweet(userData._id, tweetId))
       : dispatch(retweet(userData._id, tweetId));
   };
-
-  const handleQuote = () => {};
-
-  useEffect(() => {
-    setIsActive(userData.retweets.find((retweet) => retweet.id === tweetId) !== undefined)
-  },[userData.retweets, tweetId])
-
 
   return (
     <>
@@ -43,7 +34,7 @@ const RetweetMenu = ({ closeMenu, tweetId }) => {
               </div>
             </div>
           </div>
-          <div className="retweet-menu-btn" onClick={() => handleQuote()}>
+          <div className="retweet-menu-btn">
             <div className="retweet-menu-btn-wrapper">
               <svg
                 viewBox="0 0 24 24"

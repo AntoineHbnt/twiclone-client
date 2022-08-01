@@ -2,16 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import RetweetMenu from "./RetweetMenu";
 
-const RetweetButton = ({ tweetId, value }) => {
-  const userData = useSelector(state => state.userReducer);
-  const threadData = useSelector(state => state.threadReducer);
-
+const RetweetButton = ({ isActive, tweetId, value }) => {
   const [showRetweetMenu, setShowRetweetMenu] = useState(false);
-  const [isActive, setIsActive] = useState(threadData.userRetweets.includes(tweetId))
-
-  useEffect(() => {
-    setIsActive(userData.retweets.find((retweet) => retweet.id === tweetId) !== undefined)
-  },[userData.retweets, tweetId])
 
   return (
     <div className={"interaction green retweet"+(isActive ? " active" : "")} onClick={() => setShowRetweetMenu(showRetweetMenu => !showRetweetMenu)}>
@@ -27,7 +19,7 @@ const RetweetButton = ({ tweetId, value }) => {
         </svg>
       </div>
       <div className="number">{value}</div>
-      {showRetweetMenu && <RetweetMenu tweetId={tweetId} closeMenu={() => setShowRetweetMenu(showRetweetMenu => !showRetweetMenu)} />}
+      {showRetweetMenu && <RetweetMenu tweetId={tweetId} isActive={isActive} closeMenu={() => setShowRetweetMenu(showRetweetMenu => !showRetweetMenu)} />}
     </div>
   );
 };

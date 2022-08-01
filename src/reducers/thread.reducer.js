@@ -22,9 +22,7 @@ export default function threadReducer(state = initialState, action) {
           if (
             tweet._id === action.payload.tweetId &&
             !tweet.favs.includes(action.payload.uid)
-            ) {
-            console.log("fav");
-            
+            ) {            
             return {
               ...e,
               tweet: { ...tweet, favs: [action.payload.uid, ...tweet.favs] },
