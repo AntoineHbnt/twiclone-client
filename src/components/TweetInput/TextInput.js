@@ -26,31 +26,29 @@ function findHashtagStrategy(contentBlock, callback) {
   }
 }
 
-const tweetInputDecorator = () => new CompositeDecorator([
-  {
-    strategy: findTextToLongStrategy,
-    component: ExtraTextStyle,
-  },
-  {
-    strategy: findHashtagStrategy,
-    component: HashtagStyle,
-  },
-]);
-
+const tweetInputDecorator = () =>
+  new CompositeDecorator([
+    {
+      strategy: findTextToLongStrategy,
+      component: ExtraTextStyle,
+    },
+    {
+      strategy: findHashtagStrategy,
+      component: HashtagStyle,
+    },
+  ]);
 
 export default function TextInput() {
   const dispatch = useDispatch();
   const [editorState, setEditorState] = React.useState(() =>
-  EditorState.createEmpty(tweetInputDecorator())
+    EditorState.createEmpty(tweetInputDecorator())
   );
   const contentState = editorState.getCurrentContent();
 
   useEffect(() => {
     const text = contentState.getPlainText();
-    if(text != ""){
-      dispatch(updateMessage(text));
-    }
-  },[contentState])
+    dispatch(updateMessage(text));
+  }, [contentState]);
 
   return (
     <Editor
