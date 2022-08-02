@@ -1,72 +1,62 @@
-import React, { useEffect, useState } from "react";
-import {
-  Editor,
-  EditorState,
-  CompositeDecorator,
-  ContentState,
-} from "draft-js";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { Editor, CompositeDecorator, EditorState } from "draft-js";
 import { updateMessage } from "../../actions/tweetInput.action";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
-const Decorated = ({ children }) => {
+const ExtraTextStyle = ({ children }) => {
   return <span style={{ background: "#fb9fa8" }}>{children}</span>;
 };
 
-function findTextToLong(contentBlock, callback) {
+const HashtagStyle = ({ children }) => {
+  return <span style={{ color: "#1d9bf0" }}>{children}</span>;
+};
+
+function findTextToLongStrategy(contentBlock, callback) {
   const text = contentBlock.getText();
   if (text.length > 280) callback(280, text.length);
 }
 
-function handleStrategy(contentBlock, callback) {
-  findTextToLong(contentBlock, callback);
+function findHashtagStrategy(contentBlock, callback) {
+  const text = contentBlock.getText();
+  const regex = /#[a-zA-Z0-9]+/g;
+  let match;
+  while ((match = regex.exec(text)) !== null) {
+    callback(match.index, match.index + match[0].length);
+  }
 }
 
-const createDecorator = () =>
-  new CompositeDecorator([
-    {
-      strategy: handleStrategy,
-      component: Decorated,
-    },
-  ]);
+const tweetInputDecorator = () => new CompositeDecorator([
+  {
+    strategy: findTextToLongStrategy,
+    component: ExtraTextStyle,
+  },
+  {
+    strategy: findHashtagStrategy,
+    component: HashtagStyle,
+  },
+]);
+
 
 export default function TextInput() {
   const dispatch = useDispatch();
-  const [text, setText] = useState("");
-
-  const [editorState, setEditorState] = useState(
-    EditorState.createEmpty(createDecorator())
+  const [editorState, setEditorState] = React.useState(() =>
+  EditorState.createEmpty(tweetInputDecorator())
   );
-
-  const editor = React.useRef(null);
-
-  function focusEditor() {
-    editor.current.focus();
-  }
+  const contentState = editorState.getCurrentContent();
 
   useEffect(() => {
-    dispatch(updateMessage(text));
-  }, [text]);
-
-  useEffect(() => {
-    const currentValue = editorState.getCurrentContent().getPlainText("\u0001")
-
-    if (currentValue !== "%toErase%") {
-      focusEditor();
-    } else {
-      setEditorState(
-        EditorState.push(editorState, ContentState.createFromText(""))
-      );
+    const text = contentState.getPlainText();
+    if(text != ""){
+      dispatch(updateMessage(text));
     }
-
-    setText(editorState.getCurrentContent().getPlainText("\u0001"));
-  }, [editorState]);
+  },[contentState])
 
   return (
     <Editor
-      ref={editor}
       placeholder="Quoi de neuf ?"
       editorState={editorState}
-      onChange={(editorState) => setEditorState(editorState)}
+      onChange={setEditorState}
     />
   );
 }
