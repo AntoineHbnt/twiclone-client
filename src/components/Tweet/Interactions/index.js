@@ -1,17 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import CommentButton from "./CommentButton";
 import FavButton from "./FavButton";
 import RetweetButton from "./RetweetButton";
 import ShareButton from "./ShareButton";
 import { abbreviateNumber } from "js-abbreviation-number";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { favTweet, unfavTweet } from "../../../actions/thread.actions";
+import { UserContext } from "../../AppContext";
+import { getUser } from "../../../actions/user.actions";
 
 const Interaction = ({ tweet }) => {
   const tweetId = tweet._id;
+  const {uid,favs,retweets} = useContext(UserContext);
+  const [currentUserFavs, setCurrentUserFavs] = useState(favs.map(fav => fav.id));
+  const [currentUserRetweets, setCurrentUserRetweets] = useState(retweets.map(retweet => retweet.id));
   const dispatch = useDispatch();
-  const userData = useSelector((state) => state.userReducer);
-  const threadData = useSelector((state) => state.threadReducer);
 
   const numberParser = (num) => {
     if (num <= 9999) {
@@ -21,12 +24,11 @@ const Interaction = ({ tweet }) => {
     } else return abbreviateNumber(num.toString(),0)
   };
   
-  const [isFavActive, setIsFavActive] = useState( threadData.userFavs.includes(tweetId));
+  const [isFavActive, setIsFavActive] = useState(currentUserFavs.includes(tweetId));
   const [nbFav, setNbFav] = useState(numberParser(tweet.favs.length));
 
-  const [isRetweetActive, setIsRetweetActive] = useState(threadData.userRetweets.includes(tweetId));
+  const [isRetweetActive, setIsRetweetActive] = useState(currentUserRetweets.includes(tweetId));
   const [nbRetweet, setNbRetweet] = useState(numberParser(tweet.retweets.length));
-
 
   const [nbComment, setNbComment] = useState(numberParser(tweet.comments.length));
 
@@ -36,24 +38,13 @@ const Interaction = ({ tweet }) => {
     setNbComment(numberParser(tweet.comments.length));
     setNbRetweet(numberParser(tweet.retweets.length));
 
-    setIsRetweetActive(threadData.userRetweets.includes(tweetId) ? true : false)
-    setIsFavActive(threadData.userFavs.includes(tweetId) ? true : false)
-
-  }, [tweet])
-
-
+    setIsRetweetActive(currentUserRetweets.includes(tweetId))
+    setIsFavActive(currentUserFavs.includes(tweetId))
+  }, [tweet, currentUserFavs, currentUserRetweets]);
 
   const handleFav = () => {
-    dispatch(isFavActive ? unfavTweet({tweetId, uid: userData._id}) : favTweet({tweetId, uid: userData._id}));
-  }
-
-  const handleRetweet = () => {
-    if (isRetweetActive) {
-      setIsRetweetActive(false);
-    }
-    if (!isRetweetActive) {
-      setIsRetweetActive(true);
-    }
+    dispatch(isFavActive ? unfavTweet({tweetId, uid}) : favTweet({tweetId, uid}));
+    setCurrentUserFavs(isFavActive ? currentUserFavs.filter(fav => fav !== tweetId) : [...currentUserFavs, tweetId]);
   }
 
   return (

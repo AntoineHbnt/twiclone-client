@@ -4,11 +4,11 @@ import Interaction from "./Interactions";
 import MediaContent from "./MediaContent";
 import Quote from "./Quote";
 import { Link } from "react-router-dom";
-import { UidContext } from "../AppContext";
+import { UserContext } from "../AppContext";
 import { useEffect } from "react";
 
 const Tweet = ({ content }) => {
-  const uid = useContext(UidContext);
+  const uid = useContext(UserContext).id;
   const {type, tweet, posterId} = content;
 
   return (
