@@ -4,16 +4,14 @@ import FavButton from "./FavButton";
 import RetweetButton from "./RetweetButton";
 import ShareButton from "./ShareButton";
 import { abbreviateNumber } from "js-abbreviation-number";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { favTweet, unfavTweet } from "../../../actions/thread.actions";
-import { UserContext } from "../../AppContext";
-import { getUser } from "../../../actions/user.actions";
 
 const Interaction = ({ tweet }) => {
   const tweetId = tweet._id;
-  const {uid,favs,retweets} = useContext(UserContext);
-  const [currentUserFavs, setCurrentUserFavs] = useState(favs.map(fav => fav.id));
-  const [currentUserRetweets, setCurrentUserRetweets] = useState(retweets.map(retweet => retweet.id));
+  const user = useSelector((state) => state.userReducer);
+  const [currentUserFavs, setCurrentUserFavs] = useState(user.favs.map(fav => fav.id));
+  const [currentUserRetweets, setCurrentUserRetweets] = useState(user.retweets.map(retweet => retweet.id));
   const dispatch = useDispatch();
 
   const numberParser = (num) => {
@@ -42,8 +40,13 @@ const Interaction = ({ tweet }) => {
     setIsFavActive(currentUserFavs.includes(tweetId))
   }, [tweet, currentUserFavs, currentUserRetweets]);
 
+  useEffect(() => {
+    setCurrentUserFavs(user.favs.map(fav => fav.id));
+    setCurrentUserRetweets(user.retweets.map(retweet => retweet.id));
+  }, [user])
+
   const handleFav = () => {
-    dispatch(isFavActive ? unfavTweet({tweetId, uid}) : favTweet({tweetId, uid}));
+    dispatch(isFavActive ? unfavTweet({tweetId, uid:user._id}) : favTweet({tweetId, uid:user._id}));
     setCurrentUserFavs(isFavActive ? currentUserFavs.filter(fav => fav !== tweetId) : [...currentUserFavs, tweetId]);
   }
 
