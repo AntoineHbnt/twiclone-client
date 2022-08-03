@@ -1,11 +1,11 @@
 import React, { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
-import { UidContext } from "../AppContext";
+import { UserContext } from "../AppContext";
 import AboutUser from "./AboutUser";
 
 const ProfilResume = ({ user }) => {
   const [variable, setVariable] = useState("test");
-  const uid = useContext(UidContext)
+  const {uid} = useContext(UserContext)
   const userAt = useParams().id
 
   return (

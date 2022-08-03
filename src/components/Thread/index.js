@@ -1,15 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getThread } from "../../actions/thread.actions";
-import { UidContext } from "../AppContext";
 import Tweet from "../Tweet";
 import { isEmpty } from "../Utils";
 
-const Thread = ({ type,  filter = "" }) => {
+const Thread = ({ type, uid, filter = "" }) => {
   const dispatch = useDispatch();
   const tweetdata = useSelector((state) => state.threadReducer.timeline);
   const [tweetList, setTweetList] = useState(tweetdata);
-  const uid = useContext(UidContext)
 
   const tweetFilter = (array) => {
     switch (filter) {

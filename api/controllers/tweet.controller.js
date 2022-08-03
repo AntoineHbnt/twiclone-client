@@ -136,6 +136,7 @@ module.exports.getThread = async (req, res) => {
     if(req.params.type === "home") await getFollowingUserTweets();
 
     return {
+      uid: user._id,
       timeline: sortTweets(timeline),
       userFavs,
       userRetweets,

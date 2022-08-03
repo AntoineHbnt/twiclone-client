@@ -1,17 +1,18 @@
 import Log from "./pages/Log";
 import Routes from "./components/Routes";
 import "./styles/index.scss";
-import { UidContext } from "./components/AppContext";
+import { UserContext } from "./components/AppContext";
 import { useEffect, useState } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import axios from "axios";
 import NavBar from "./components/NavBar";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "./actions/user.actions";
 
 function App() {
   const [uid, setUid] = useState();
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.userReducer);
 
   useEffect(() => {
     axios({
@@ -23,11 +24,13 @@ function App() {
         setUid(res.data)})
       .catch((err) => console.log(err));
 
-    if(uid) dispatch(getUser(uid))
+    if(uid) {
+      dispatch(getUser(uid))
+    }
   }, [uid, dispatch]);
 
   return (
-    <UidContext.Provider value={uid}>
+    <UserContext.Provider value={{uid, favs: user.favs, retweets: user.retweets}}>
       {!uid ? (
         <Log />
       ) : (
@@ -38,7 +41,7 @@ function App() {
           </Router>
         </div>
       )}
-    </UidContext.Provider>
+    </UserContext.Provider>
   );
 }
 

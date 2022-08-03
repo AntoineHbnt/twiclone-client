@@ -46,7 +46,7 @@ const AboutUser = ({ user }) => {
           </g>
         </svg>
         <span>
-          A rejoint Twitter en{" "}
+          A rejoint Twiiclone en{" "}
           {dateParser(user.createdAt, {
             year: "numeric",
             month: "long",

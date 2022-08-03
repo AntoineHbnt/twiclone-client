@@ -31,7 +31,7 @@ const Profil = () => {
           <div className="page-content-wrapper">
             <ProfilResume user={userData} />
             <ProfilContentMenu userAt={userAt} type={type} />
-            {userData && <Thread type="profil" filter={type ? type : "tweets"}/>}
+            {userData && <Thread type="profil" uid={userData._id} filter={type ? type : "tweets"}/>}
           </div>
         </div>
         <RightBar />
