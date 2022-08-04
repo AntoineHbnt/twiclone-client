@@ -1,6 +1,8 @@
 .picture-editing-row {
-  .editing-profil-btn-container {
-    .editing-profil-btn-wrapper {
+  .profil-btn-container {
+    display: flex;
+    align-items: flex-start;
+    .profil-btn-wrapper {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -15,6 +17,7 @@
       span {
         line-height: 1.25rem;
         font-weight: 500;
+        font-size: 1rem;
       }
 
       &:hover{

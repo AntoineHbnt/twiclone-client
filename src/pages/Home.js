@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
-import { UidContext } from "../components/AppContext";
+import { useEffect } from "react";
+import { UserContext } from "../components/AppContext";
 import RightBar from "../components/RightBar";
 import Thread from "../components/Thread";
 import TweetInput from "../components/TweetInput";
 
 const Home = () => {
-  const uid = useContext(UidContext);
+  const {uid} = useContext(UserContext);
 
   return (
     <main className="main-container">
