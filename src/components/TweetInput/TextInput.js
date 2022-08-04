@@ -19,7 +19,7 @@ function findTextToLongStrategy(contentBlock, callback) {
 
 function findHashtagStrategy(contentBlock, callback) {
   const text = contentBlock.getText();
-  const regex = /#[a-zA-Z0-9]+/g;
+  const regex = /#[A-zÀ-ú0-9]+/g;
   let match;
   while ((match = regex.exec(text)) !== null) {
     callback(match.index, match.index + match[0].length);
