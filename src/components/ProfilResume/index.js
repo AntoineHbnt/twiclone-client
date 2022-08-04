@@ -2,10 +2,9 @@ import React, { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import { UserContext } from "../AppContext";
 import AboutUser from "./AboutUser";
+import ProfilButton from "./ProfilButton";
 
 const ProfilResume = ({ user }) => {
-  const [variable, setVariable] = useState("test");
-  const {uid} = useContext(UserContext)
   const userAt = useParams().id
 
   return (
@@ -24,19 +23,7 @@ const ProfilResume = ({ user }) => {
                 </div>
               </div>
 
-              {user && (user._id === uid ? (
-                <div className="editing-profil-btn-container">
-                  <div className="editing-profil-btn-wrapper">
-                    <span>Éditer le profil</span>
-                  </div>
-                </div>
-              ) : (
-                <div className="editing-profil-btn-container">
-                  <div className="editing-profil-btn-wrapper">
-                    <span>Suivre</span>
-                  </div>
-                </div>
-              ))}
+              {user &&  <ProfilButton profilId={user._id}/>}
             </div>
             <div className="username">
               <div className="user-pseudo">
