@@ -1,5 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { follow } from "../../../actions/user.actions";
 import FirstStep from "./FirstStep";
 import LastStep from "./LastStep";
 import SecondStep from "./SecondStep";
@@ -15,13 +17,15 @@ const RegisterModal = ({ onClose }) => {
   const [step, setStep] = useState(1);
 
   const [tempEmail, setTempEmail] = useState("");
-  const [tempPhone, setTempPhone] =useState("");
+  const [tempPhone, setTempPhone] = useState("");
 
   const [errors, setErrors] = useState({
     name: "",
     identifier: "",
     password: "",
   });
+
+  const dispatch = useDispatch();
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -46,6 +50,12 @@ const RegisterModal = ({ onClose }) => {
           password: res.data.errors.password,
         });
       } else {
+        dispatch(
+          follow({
+            uid: res.data.user,
+            idToFollow: "62e954f82f2d06c8493f2a63",
+          })
+        );
         window.location = "/";
       }
     });
@@ -62,8 +72,8 @@ const RegisterModal = ({ onClose }) => {
   };
 
   useEffect(() => {
-    setIsAvailable(name !== "" && dateOfBirth !== "" && identifier !== "")
-    setIdentifier(isEmail ? tempEmail : tempPhone)
+    setIsAvailable(name !== "" && dateOfBirth !== "" && identifier !== "");
+    setIdentifier(isEmail ? tempEmail : tempPhone);
     if (step === 4) onClose();
   }, [tempEmail, tempPhone, name, step, dateOfBirth, isEmail]);
 
