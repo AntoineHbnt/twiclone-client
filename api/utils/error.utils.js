@@ -7,10 +7,10 @@ module.exports.registerErrors = (err) => {
   };
 
   if (err.message.includes("userAt"))
-    errors.userAt = "Nom d'utilisateur incorrect";
+    errors.userAt = "Votre pseudo doit contenir au minimum 6 caractères";
 
   if (err.message.includes("userPseudo"))
-    errors.userPseudo = "Votre pseudo doit contenir au minimum 6 caractères";
+    errors.userPseudo = "Nom d'utilisateur incorrect";
 
   if (err.message.includes("identifier"))
     errors.identifier = "L'identifiant (email / téléphone) est incorrect";
